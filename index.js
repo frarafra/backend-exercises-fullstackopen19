@@ -17,6 +17,16 @@ app.use(bodyParser.json())
 app.use(cors())
 app.use(express.static('build'))
 app.use('/', routes)
+app.use((req, res) => res.status(404).send({ error: 'unknown endpoint' }))
+
+const errorHandler = (error, req, res, next) => {
+  console.error(error.message)
+  if (error.name === 'CastError' && error.kind === 'ObjectId') {
+    return res.status(400).send({ error: 'malformatted id' })
+  } 
+  next(error)
+}
+app.use(errorHandler)
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)

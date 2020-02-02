@@ -22,7 +22,7 @@ const getPersonById = async (req, res, next) => {
   }
 }
 
-const createPerson = async (req, res) => {
+const createPerson = async (req, res, next) => {
   const body = req.body
 
   if (!body.name || !body.number) {
